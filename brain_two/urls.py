@@ -22,4 +22,9 @@ from django.urls import reverse_lazy
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('todo/', include("todos.urls")),
+    path(
+        "",
+        RedirectView.as_view(url=reverse_lazy("todo_list")),
+        name="home",
+    ),
 ]

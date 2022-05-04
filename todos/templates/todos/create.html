@@ -10,10 +10,9 @@
   <main class="TodoList">
       <form method="post">
         {% csrf_token %}
-        {{ todolist.name }}
-
+        {{ form.as_p }}
         <p>
-        <button>delete</button>
+        <button>Submit</button>
         </p>
       </form>
   </main>

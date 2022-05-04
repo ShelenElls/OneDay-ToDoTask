@@ -1,11 +1,9 @@
-from msilib.schema import ListView
-from pyexpat import model
+from django.db import IntegrityError
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-
 from todos.models import TodoItem, TodoList
 
 
@@ -26,7 +24,7 @@ from todos.models import TodoItem, TodoList
 
 class TodoListView(ListView):
     model = TodoList
-    template_name = "todolist.html"
+    template_name = "todos/list.html"
     # context_object_name = "todo_list"
 
     def __str__(self):
@@ -43,7 +41,7 @@ class TodoListView(ListView):
 #     template_name = "model_names/detail.html"
 class TodoDetailView(DetailView):
     model = TodoList
-    template_name = "tododetail.html"
+    template_name = "todos/detail.html"
     
     def __str__(self):
         return str(self.name)    
@@ -71,14 +69,12 @@ class TodoDetailView(DetailView):
 
 class TodoCreateView(CreateView):
     model = TodoList
-    template_name = "todo/create.html"
-    fields = ["Task", "Due date", "Is completed", "List", ]
+    template_name = "todos/create.html"
+    fields = ["name"]
     
     def get_success_url(self):
         return reverse_lazy("todo_details", args=[self.object.id])
     
-    def __str__(self):
-        return str(self.name)    
 
 
 # UPDATE list VIEW
@@ -101,8 +97,8 @@ class TodoCreateView(CreateView):
 #         return reverse_lazy("model_name_detail", args=[self.object.id])
 class TodoUpdateView(UpdateView):
     model = TodoList
-    template_name = "todo/update.html"
-    fields = ["Task", "Due date", "Is completed", "List", ]
+    template_name = "todos/edit.html"
+    fields = ["name",]
 
     def get_success_url(self):
         return reverse_lazy("todo_details", args=[self.object.id])
@@ -124,10 +120,22 @@ class TodoUpdateView(UpdateView):
 #     success_url = reverse_lazy("model_name_list")
 class TodoDeleteView(DeleteView):
     model = TodoList
-    template_name = "todo/delete.html"
+    template_name = "todos/delete.html"
 
     success_url = reverse_lazy("todo_list")
 
 class TodoItemCreateView(CreateView):
     model = TodoItem
-    template_name = "todo/items/create.html"
+    template_name = "todos/items/create.html"
+    fields = ["task", "due_date", "is_completed", "list"]
+
+    def get_success_url(self):
+        return reverse_lazy("todo_details", args=[self.object.id])
+
+class TodoItemUpdateView(CreateView):
+    model = TodoItem
+    template_name = "todo/items/edit.html"
+    feilds = ["Task", "Due date", "Is completed", "List", ]
+
+    def get_success_url(self):
+        return reverse_lazy("todo_details", args=[self.object.id])

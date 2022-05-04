@@ -7,13 +7,13 @@
   <title>brain_two</title>
 </head>
 <body>
-  <main class="TodoList">
+  <main class="TodoItem">
       <form method="post">
         {% csrf_token %}
-        {{ todolist.name }}
-
+        {{field.name}}
+        {{item.name}}
         <p>
-        <button>delete</button>
+        <button>Submit</button>
         </p>
       </form>
   </main>
